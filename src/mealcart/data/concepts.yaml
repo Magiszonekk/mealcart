@@ -1,0 +1,81 @@
+# Concept dictionary for exclusions (profile rules `skladnik:` / `alergen:`).
+#
+# One entry = one thing a person may not eat. To add one, copy an entry and change the patterns.
+#   patterns  regular expressions matched case-insensitively against recipe ingredient lines and product
+#             ingredient text (any language: OFF ingredients are sometimes German/French/English).
+#             Write the Polish stem with an inflection wildcard: "orzech\w* włosk\w*" matches
+#             "orzech włoski", "orzechów włoskich", "orzechami włoskimi".
+#   not       optional patterns that cancel a match in the same text fragment ("gałka muszkatołowa" is not a nut).
+#   off_allergen  the Open Food Facts allergen tag that covers this concept (may be broader: en:nuts = all tree nuts).
+#                 Used only by the `alergia` level; `nie_jem` looks at the ingredient text only.
+#
+# Matching is per fragment: product ingredient text is split on , ; ( ) so "not" works locally.
+
+orzech_wloski:
+  label: orzech włoski
+  patterns:
+    - 'orzech\w* włosk\w*'
+    - '\bwalnut\w*'
+    - '\bwaln(u|ü)(ss|ß)\w*'          # de: Walnuss, Walnüsse, Walnusskerne
+    - '\bnoix\b(?! de (coco|cajou|pécan|macadamia|muscade))'   # fr: "noix" alone = walnut
+    - '\bnoci\b'                      # it (not "noce": in Polish that means "nights")
+    - '\bnuec\w*'                     # es
+  off_allergen: en:nuts
+
+orzechy:
+  label: orzechy (wszystkie orzechy drzewne)
+  patterns:
+    - 'orzech\w*'
+    - '\bmigdał\w*'
+    - '\bnerkowc\w*'
+    - '\bpistacj\w*'
+    - '\bpekan\w*'
+    - '\bmakadami\w*'
+    - '\b(hazel|wal|cashew |pecan |brazil |macadamia )?nuts?\b'
+    - '\bnüss\w*|\bnuss\w*'
+    - '\bnoisette\w*|\bamande\w*'
+  not:
+    - 'orzech\w* ziemn\w*'           # peanuts are a separate allergen
+    - 'orzech\w* kokos\w*|kokos'
+    - 'gałk\w* muszkatoł\w*|muscade|nutmeg|muskat'
+    - 'orzeszk\w* ziemn\w*|peanut|erdnuss|arachide'
+  off_allergen: en:nuts
+
+orzeszki_ziemne:
+  label: orzeszki ziemne (arachidowe)
+  patterns:
+    - 'orze(ch|szk)\w* ziemn\w*'
+    - '\barachid\w*'
+    - '\bpeanut\w*'
+    - '\berdnuss\w*'
+    - "\\bcacahu[eè]te\\w*"
+  off_allergen: en:peanuts
+
+mleko:
+  label: mleko i nabiał
+  patterns:
+    - '\bmle(ko|ka|ku|kiem)\b|\bmleczn\w*'
+    - '\bmaśl\w*|\bmasł\w*'
+    - '\bśmietan\w*|\bśmietank\w*'
+    - '\bser\w*\b|\btwar[oó]g\w*'
+    - '\bjogurt\w*|\bkefir\w*|\bmaślank\w*'
+    - '\bserwatk\w*|\blaktoz\w*|\bkazein\w*'
+    - '\bmilk\b|\bmilch\w*|\blait\b|\bbutter\b|\bbeurre\b|\bcream\b|\bsahne\b|\bwhey\b|\bmolke\b'
+  not:
+    - 'mleko kokosow\w*|mleczko kokosow\w*|mleko (owsiane|sojowe|migdałowe|ryżowe)'
+    - 'masło orzechow\w*|masło kakaowe|masła kakaowego|cocoa butter|kakaobutter'
+    - 'ser(ek)? tofu|\bseler\w*|\bserca\b'
+  off_allergen: en:milk
+
+gluten:
+  label: gluten
+  patterns:
+    - '\bmąk\w* (pszenn|żytni|jęczmienn|orkiszow)\w*|\bmąk\w*\b'
+    - '\bpszen\w*|\bżyt\w*|\bjęczmie\w*|\borkisz\w*'
+    - '\bkasz\w* (manna|kuskus|jęczmienn|pęczak|orkiszow)\w*|\bkuskus\w*|\bbulgur\w*'
+    - '\bmakaron\w*|\bchleb\w*|\bbułk\w*|\bbułecz\w*|\bkluse?k\w*|\bpierog\w*|\bciast\w*'
+    - '\bwheat\b|\bweizen\w*|\bblé\b|\bgluten\w*'
+  not:
+    - 'bezglutenow\w*|gluten[- ]free|glutenfrei|sans gluten'
+    - 'mąk\w* (ryżow|kukurydzian|ziemniaczan|gryczan|kokosow|migdałow)\w*'
+  off_allergen: en:gluten

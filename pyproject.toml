@@ -1,0 +1,45 @@
+[project]
+name = "mealcart"
+version = "0.1.0"
+description = "Meal planning + shopping list on open data (Open Food Facts, Wikibooks, Open Prices)"
+authors = [{ name = "Magiszonek" }]
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.1",
+    "httpx>=0.28",
+    "psycopg[binary]>=3.2",
+    "pydantic>=2.9",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+mealcart-ingest = "mealcart.ingest.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.7,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "ruff>=0.8",
+    "types-pyyaml>=6.0",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # polish typographic characters are intentional
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["db: needs the local Postgres (MEALCART_DATABASE_URL)"]

@@ -1,0 +1,12 @@
+# Example profile. Exclusions name a concept from src/mealcart/data/concepts.yaml.
+# poziom: nie_jem (preference: ingredient text only) | alergia (also allergen tags, traces, unknown = excluded)
+profil: przyklad
+porcje: 2
+wyklucz:
+  - skladnik: orzech_wloski
+    poziom: nie_jem
+  # - skladnik: orzeszki_ziemne
+  #   poziom: alergia
+bialko_min_g_porcja: 25
+czas_max_min: 45
+mam: [kapusta, boczek]
